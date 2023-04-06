@@ -24,12 +24,14 @@ app.use(express.json()); // parse json bodies
 // ROUTES
 ////////////////////////////////
 // create a test route
-// app.get("/", (req, res) => {
+//  app.get("/", (req, res) => {
 //   res.send("hello world");
-// });
+//  });
 app.use("/", routes);
 
-
+app.use((req,res) => {
+  res.status(404).json({message: "NOT A PROPER ROUTE"})
+})
 
 
 

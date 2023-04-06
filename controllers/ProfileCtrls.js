@@ -1,39 +1,56 @@
+const db = require('../models') //this is where our db mongoose connection lives as well as our models
 
-// UPDATE ROUTE
+
+const getProfile = (req, res) => {
+   
+    db.People.find({})
+    .then((foundProfile) => {
+        if(!foundProfile){
+            res.status(404).json({message: 'Cannot find Profile'})
+        } else {
+            res.status(200).json({data: foundProfile})
+        }
+    })
+}
+// PEOPLE CREATE ROUTE
+const createProfile = (req, res) => {
+    // res.send('createPeople')
+    db.Profile.create(req.body)
+    .then((createdProfile) => {
+        if(!createdProfile){
+            res.status(400).json({message: 'Cannot create Profile'})
+        } else {
+            res.status(201).json({data: createdPerson, message: 'Profile created'})
+        }
+    })
+}
+// PEOPLE UPDATE ROUTE
 const updateProfile = (req, res) => {
-    Profile.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    db.Profile.findByIdAndUpdate(req.params.id, req.body, {new: true})
     .then((updatedProfile) => {
         if(!updatedProfile){
             res.status(400).json({Message: 'Could not update profile'})
         } else {
-            res.status(200).json({Data: updatedProfile, Message: "Person updated"})
+            res.status(200).json({Data: updatedPerson, Message: "Profile updated"})
         }
     })
-    .catch((error) => {
-        res.status(500).json({ Message: error.message });
-      });
-};
+}
 
-//  DESTROY ROUTE
+// PEOPLE DESTROY ROUTE
 const deleteProfile = (req, res) => {
-    Profile.findByIdAndDelete(req.params.id)
-      .then((deletedProfile) => {
-        if (!deletedProfile) {
-          res.status(400).json({ Message: 'Could not delete profile' });
+    db.Profile.findByIdAndDelete(req.params.id)
+    .then((deletedProfile) => {
+        if(!deletedProfile){
+            res.status(400).json({Message: 'Could not delete profile'})
         } else {
-          res
-            .status(200)
-            .json({ Data: deletedProfile, Message: 'Profile deleted' });
+            res.status(200).json({Data: deletedPerson, Message: "Profile deleted"})
         }
-      })
-      .catch((error) => {
-        res.status(500).json({ Message: error.message });
-      });
-  };
-  
-  module.exports = {
-    getProfiles,
+    })
+}
+
+module.exports = {
+    getProfile,
     createProfile,
     updateProfile,
     deleteProfile,
-  };
+}
