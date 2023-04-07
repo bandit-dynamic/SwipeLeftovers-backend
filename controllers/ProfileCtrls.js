@@ -1,9 +1,7 @@
-const db = require('../models') //this is where our db mongoose connection lives as well as our models
-
-
+const db = require('../models') 
 const getProfile = (req, res) => {
    
-    db.People.find({})
+    db.Profile.find({})
     .then((foundProfile) => {
         if(!foundProfile){
             res.status(404).json({message: 'Cannot find Profile'})
@@ -12,38 +10,38 @@ const getProfile = (req, res) => {
         }
     })
 }
-// PEOPLE CREATE ROUTE
+// Profile CREATE ROUTE
 const createProfile = (req, res) => {
-    // res.send('createPeople')
+    // res.send('createProfile')
     db.Profile.create(req.body)
     .then((createdProfile) => {
         if(!createdProfile){
             res.status(400).json({message: 'Cannot create Profile'})
         } else {
-            res.status(201).json({data: createdPerson, message: 'Profile created'})
+            res.status(201).json({data: createdProfile, message: 'Profile created'})
         }
     })
 }
-// PEOPLE UPDATE ROUTE
+//  UPDATE ROUTE
 const updateProfile = (req, res) => {
     db.Profile.findByIdAndUpdate(req.params.id, req.body, {new: true})
     .then((updatedProfile) => {
         if(!updatedProfile){
             res.status(400).json({Message: 'Could not update profile'})
         } else {
-            res.status(200).json({Data: updatedPerson, Message: "Profile updated"})
+            res.status(200).json({Data: updatedProfile, Message: "Profile updated"})
         }
     })
 }
 
-// PEOPLE DESTROY ROUTE
+// DESTROY ROUTE
 const deleteProfile = (req, res) => {
     db.Profile.findByIdAndDelete(req.params.id)
     .then((deletedProfile) => {
         if(!deletedProfile){
             res.status(400).json({Message: 'Could not delete profile'})
         } else {
-            res.status(200).json({Data: deletedPerson, Message: "Profile deleted"})
+            res.status(200).json({Data: deletedProfile, Message: "Profile deleted"})
         }
     })
 }
