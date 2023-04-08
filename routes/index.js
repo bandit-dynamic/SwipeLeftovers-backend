@@ -1,9 +1,9 @@
 const router = require("express").Router()
-const ProfileRoute = require("./ProfileRoutes")
+const profileRoute = require("./profileRoutes")
 
 
 
 
-router.use('/Profile', ProfileRoute)
+router.use('/profile', profileRoute)
 
 module.exports = router
