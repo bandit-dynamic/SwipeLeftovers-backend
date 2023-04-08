@@ -10,4 +10,7 @@ router.put('/:id', ProfileCtrl.updateProfile)
 router.delete('/:id', ProfileCtrl.deleteProfile)
 
 
+
+
+
 module.exports = router;
