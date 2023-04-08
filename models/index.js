@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
+const {DATABASE_URL} = process.env
 ///////////////////////////////
 // DATABASE CONNECTION
 ////////////////////////////////
-///LINKING TO DATABASE
-const MONGODB_URI = process.env.MONGODB_URI;
-mongoose.connect(MONGODB_URI, {
+// Establish Connection
+mongoose.connect(DATABASE_URL, {
   useUnifiedTopology: true,
-  useNewUrlParser: false
-})
+  useNewUrlParser: true,
+});
 // Connection Events
 mongoose.connection
   .on("open", () => console.log("Your are connected to mongoose"))
@@ -17,6 +17,6 @@ mongoose.connection
   //all code above this
 
 module.exports = {
-  Profile: require('./Profile')
-  // User: require('./User')
+  Profile: require('./Profile'),
+  User: require('./User')
 }
