@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
-const {DATABASE_URL} = process.env
+const {MONGODB_URI} = process.env
 ///////////////////////////////
 // DATABASE CONNECTION
 ////////////////////////////////
 // Establish Connection
-mongoose.connect(DATABASE_URL, {
+mongoose.connect(MONGODB_URI, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
 });
@@ -17,6 +17,6 @@ mongoose.connection
   //all code above this
 
 module.exports = {
-  Profile: require('./Profile'),
-  User: require('./User')
+  Profile: require('./Profile')
+  // User: require('./User')
 }

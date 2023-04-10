@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const ProfileRoute = require("./ProfileRoutes")
+const ProfileRoute = require("./profileRoutes")
 
 
 
