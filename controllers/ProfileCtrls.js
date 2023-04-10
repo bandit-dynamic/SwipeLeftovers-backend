@@ -135,7 +135,7 @@ const verifyJWT = (req, res, next) => {
 
 /// ACCESSING THE PROFILES ACCOUNT
 const profileAccess = (verifyJWT, (req, res) => {
-    res.json({isLoggedIn: true, email: req.profile.email})
+    res.status(200).json({isLoggedIn: true, email: req.profile.email})
 })
 
 module.exports = {
