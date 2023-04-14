@@ -73,70 +73,155 @@ const createProfile = async (req, res) => {
             password: profile.password
         })
         dbProfile.save()
-        res.status(200).json({Message: "Profile Created."})
+        res.status(200).json({Message: "Profile Created.",
+      dbProfile})
     }
 
 }
 
-const loginProfile = (req, res) => {
-    const profileLogin = req.body;
-    db.Profile.findOne({email: profileLogin.email})
-    .then(dbProfile => {
-        if (!dbProfile) {
-            return res.status(400).json({Message: "Invalid Email or Password."})
-        }
-        bcrypt.compare(profileLogin.password, dbProfile.password)
-        .then(isCorrect => {
-            if (isCorrect) {
-                const checkIn = {
-                    id: dbProfile._id,
-                    email: dbProfile.email
-                }
-                jwt.sign(
-                    checkIn,
-                    process.env.JWT_SECRET,
-                    {expiresIn: 86400},
-                    (err, token) => {
-                        if (err) return res.status(400).json({Message: err})
-                        return res.status(200).json({
-                            Message: "Successful Login",
-                            token: "Bearer" + token
-                        })
-                    }
-                )
-            } else {
-                return res.status(400).json({
-                    Message: "Invalid Username or Password"
-                })
-            }
+// const loginProfile = (req, res) => {
+//     const profileLogin = req.body;
+//     db.Profile.findOne({email: profileLogin.email})
+//     .then(dbProfile => {
+//         if (!dbProfile) {
+//             return res.status(400).json({Message: "Invalid Email or Password."})
+//         }
+//         bcrypt.compare(profileLogin.password, dbProfile.password)
+//         .then(isCorrect => {
+//             if (isCorrect) {
+//                 const checkIn = {
+//                     id: dbProfile._id,
+//                     email: dbProfile.email
+//                 }
+//                 jwt.sign(
+//                     checkIn,
+//                     process.env.JWT_SECRET,
+//                     {expiresIn: 86400},
+//                     (err, token) => {
+//                         if (err) return res.status(400).json({Message: err})
+//                         console.log("GREAT SUCCSESS")
+//                         return res.status(200).json({
+//                             Message: "Successful Login",
+//                             token: "Bearer" + token
+//                         })
+//                     }
+//                 )
+//             } else {
+//                 return res.status(400).json({
+//                     Message: "Invalid Username or Password"
+//                 })
+//             }
+//         })
+//     })
+// }
+
+const loginProfile = (request, response) => {
+    db.Profile.findOne({ email: request.body.email })
+
+    // if email exists
+    .then((user) => {
+      // compare the password entered and the hashed password found
+      bcrypt.compare(request.body.password, user.password)
+
+        // if the passwords match
+        .then((passwordCheck) => {
+
+          // check if password matches
+          if(!passwordCheck) {
+            return response.status(400).send({
+              message: "Passwords does not match",
+              error,
+            });
+          }
+
+          //   create JWT token
+          const token = jwt.sign(
+            {
+              userId: user._id,
+              userEmail: user.email,
+            },
+            "RANDOM-TOKEN",
+            { expiresIn: "24h" }
+          );
+          //   return success response
+          response.status(200).send({
+            message: "Login Successful",
+            email: user.email,
+            token,
+          });
         })
+        // catch error if password does not match
+        .catch((error) => {
+          response.status(400).send({
+            message: "Passwords does not match",
+            error,
+          });
+        });
     })
+    // catch error if email does not exist
+    .catch((e) => {
+      response.status(404).send({
+        message: "Email not found",
+        e,
+      });
+    });
 }
 
 ///Verify the Login
-const verifyJWT = (req, res, next) => {
-    const token = req.headers["token-required"]?.split(' ')[1]
+// const verifyJWT = async (req, res, next) => {
+//     const token = awaitreq.headers["x-access-token"]?.split(' ')[1]
+//     console.log(token)
 
-    if (token) {
-        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-            if (err) return res.json({
-                isLoggedIn: false,
-                Message: "Failed to Authenticate"
-            })
-            req.profile = {};
-            req.profile.id = decoded.id
-            req.profile.email = decoded.email
-            next()
-        })
-    } else {
-        res.status(200).json({Message: "Incorrect Token Given", isLoggedIn: false})
+//     if (token) {
+//         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+//             if (err) return res.json({
+//                 isLoggedIn: false,
+//                 Message: "Failed to Authenticate"
+//             })
+//             req.profile = {};
+//             req.profile.id = decoded.id
+//             req.profile.email = decoded.email
+//             next()
+//         })
+//         console.log("YES")
+//     } else {
+//         res.status(200).json({Message: "Incorrect Token Given", isLoggedIn: false})
+//     }
+// }
+
+const verifyJWT = async (request, response, next) => {
+    try {
+      //   get the token from the authorization header
+      const token = await request.headers.authorization.split(" ")[1];
+  
+      //check if the token matches the supposed origin
+      const decodedToken = await jwt.verify(token, "RANDOM-TOKEN");
+  
+      // retrieve the user details of the logged in user
+      const user = await decodedToken;
+  
+      // pass the user down to the endpoints here
+      request.user = user;
+  
+      // pass down functionality to the endpoint
+      next();
+      
+    } catch (error) {
+      response.status(401).json({
+        error: new Error("Invalid request!"),
+      });
     }
-}
+  };
 
 /// ACCESSING THE PROFILES ACCOUNT
-const profileAccess = (verifyJWT, (req, res) => {
-    res.status(200).json({isLoggedIn: true, email: req.profile.email})
-})
+// const profileAccess = (verifyJWT, (req, res) => {
+//     res.status(200).json({isLoggedIn: true})
+//     console.log("GREAT SUCCESS-2")
+// })
+
+const profileAccess = (verifyJWT, (request, response) => {
+    response.status(200).json({ message: "You are authorized to access me"});
+  })
 
 module.exports = {
     getProfile,

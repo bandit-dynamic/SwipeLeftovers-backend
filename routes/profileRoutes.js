@@ -12,8 +12,8 @@ router.delete('/:id', ProfileCtrl.deleteProfile)
 // ROUTES - METHODS => FOR ACCOUNT//
 //logging in
 router.post('/login', ProfileCtrl.loginProfile)
-router.get('/profileInfo', ProfileCtrl.profileAccess)
-
+// router.get('/profileInfo', ProfileCtrl.profileAccess)
+router.get('/auth', ProfileCtrl.profileAccess)
 
 
 
