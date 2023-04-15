@@ -50,7 +50,8 @@ const deleteProfile = (req, res) => {
 }
 
 // ACCOUNT ROUTES
-const createProfile = async (req, res) => {
+const createProfile = async (req, res) => { 
+  req.body.image=req.body.image.split(',')
     const profile = req.body;
     const salt = bcrypt.genSaltSync(10)
     const takenEmail = await db.Profile.findOne({email: profile.email})
