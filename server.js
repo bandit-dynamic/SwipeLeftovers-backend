@@ -3,8 +3,9 @@
 ////////////////////////////////
 // get .env variables
 require("dotenv").config();
-// pull PORT from .env, give default value of 3000
-const { PORT } = process.env;
+
+// const { PORT } = process.env;
+const PORT = process.env.PORT || 4000
 // import express
 const express = require("express");
 // create application object
@@ -39,4 +40,7 @@ app.use((req,res) => {
 ///////////////////////////////
 // LISTENER
 ////////////////////////////////
-app.listen(PORT, () => console.log(`listening on PORT ${PORT}`));
+// app.listen(PORT, () => console.log(`listening on PORT ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
