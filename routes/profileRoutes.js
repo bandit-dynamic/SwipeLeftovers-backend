@@ -8,7 +8,7 @@ router.get('/', ProfileCtrl.getProfile)
 router.post('/register', ProfileCtrl.createProfile)
 router.put('/:id', ProfileCtrl.updateProfile)
 router.delete('/:id', ProfileCtrl.deleteProfile)
-
+// router.get('/all', ProfileCtrl.home)
 // ROUTES - METHODS => FOR ACCOUNT//
 //logging in
 router.post('/login', ProfileCtrl.loginProfile)

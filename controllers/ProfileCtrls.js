@@ -15,6 +15,7 @@ const getProfile = (req, res) => {
         }
     })
 }
+
 // Profile CREATE ROUTE
 // const createProfile = (req, res) => {
 //     // res.send('createProfile')
@@ -31,7 +32,6 @@ const getProfile = (req, res) => {
 //  UPDATE ROUTE
 const updateProfile = (req, res) => {
     req.body.image = req.body.image.split(',')
-    
     db.Profile.findByIdAndUpdate(req.params.id, req.body, {new: true})
     .then((updatedProfile) => {
         if(!updatedProfile){
@@ -84,7 +84,7 @@ const createProfile = async (req, res) => {
         res.status(200).json({Message: "Profile Created.",
       dbProfile})
     }
-
+    
 }
 
 // const loginProfile = (req, res) => {
