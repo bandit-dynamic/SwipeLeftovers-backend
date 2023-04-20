@@ -1,6 +1,8 @@
 const db = require('../models')
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+// const homePage = require('./home')
+
 
 
 const getProfile = (req, res) => {
@@ -26,9 +28,10 @@ const getProfile = (req, res) => {
 //         }
 //     })
 // }
+
 //  UPDATE ROUTE
 const updateProfile = (req, res) => {
-    req.body.image=req.body.image.split(',')
+    req.body.image = req.body.image.split(',')
     db.Profile.findByIdAndUpdate(req.params.id, req.body, {new: true})
     .then((updatedProfile) => {
         if(!updatedProfile){
@@ -38,6 +41,8 @@ const updateProfile = (req, res) => {
         }
     })
 }
+
+
 
 // DESTROY ROUTE
 const deleteProfile = (req, res) => {
