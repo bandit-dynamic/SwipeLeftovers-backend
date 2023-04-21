@@ -13,7 +13,7 @@ router.delete('/:id', ProfileCtrl.deleteProfile)
 //logging in
 router.post('/login', ProfileCtrl.loginProfile)
 // router.get('/profileInfo', ProfileCtrl.profileAccess)
-router.get('/auth', ProfileCtrl.profileAccess)
+// router.get('/auth', ProfileCtrl.profileAccess)
 
 
 
