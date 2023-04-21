@@ -39,31 +39,6 @@ app.use("/", routes);
 
 "use strict";
 
-//imports
-
-
-const imgbbUploader = require("imgbb-uploader");
-
-//route for posting parking images
-app.post("/imageupload", (req, res, next) => {
-  console.log("reached /imageupload endpoint");
-  const options = {
-    apiKey: "c749013928a5455e72c09e03ad36d1f2", // MANDATORY apikey for imgBB
-    base64string: req.body.base64string,
-    // OPTIONAL: pass base64-encoded image (max 32Mb)
-  };
-  imgbbUploader(options)
-    .then((response) => {
-      console.log(response);
-      return res.status(200).json({
-        message: "Uploaded picture successfully",
-        image: response.url,
-      });
-    })
-    .catch((error) => console.error(error));
-});
-
-
 
 
 ///////////////////////////////
