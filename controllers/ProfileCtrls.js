@@ -1,7 +1,7 @@
 const db = require('../models')
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const {JWT_SECRET} = process.env
+// const {JWT_SECRET} = process.env
 
 
 
@@ -77,55 +77,56 @@ const createProfile = async (req, res) => {
 
 
 const loginProfile = (req, res) => {
-    db.Profile.findOne({ email: req.body.email })
+  db.Profile.findOne({ email: req.body.email })
 
-    // if email exists
-    .then((user) => {
-      // compare the password entered and the hashed password found
-      bcrypt.compare(req.body.password, user.password)
+  // if email exists
+  .then((existProfile) => {
+    // compare the password entered and the hashed password found
+    bcrypt.compare(req.body.password, existProfile.password)
 
-        // if the passwords match
-        .then((passwordCheck) => {
+      // if the passwords match
+      .then((passwordCheck) => {
 
-          // check if password matches
-          if(!passwordCheck) {
-            return res.status(400).send({
-              message: "Passwords does not match",
-              error,
-            });
-          }
-
-          //   create JWT token
-          const token = jwt.sign(
-            {
-              userId: user._id,
-              userEmail: user.email,
-            },
-            JWT_SECRET,
-            { expiresIn: "24h" }
-          );
-          //   return success response
-          res.status(200).send({
-            message: "Login Successful",
-            email: user.email,
-            token,
-          });
-        })
-        // catch error if password does not match
-        .catch((error) => {
-          res.status(400).send({
-            message: "Passwords does not match",
+        // check if password matches
+        if(!passwordCheck) {
+          return res.status(400).send({
+            message: "Email or Password does not match",
             error,
           });
+        }
+
+        //   create JWT token
+        const token = jwt.sign(
+          {
+            profileId: existProfile._id,
+            profileEmail: existProfile.email,
+          },
+          // JWT_SECRET,
+          "SECRET",
+          { expiresIn: "24h" }
+        );
+        //   return success response
+        res.status(200).send({
+          message: "Login Successful",
+          email: existProfile.email,
+          token,
         });
-    })
-    // catch error if email does not exist
-    .catch((e) => {
-      res.status(404).send({
-        message: "Email not found",
-        e,
+      })
+      // catch error if password does not match
+      .catch((error) => {
+        res.status(400).send({
+          message: "Email or Password does not match",
+          error,
+        });
       });
+  })
+  // catch error if email does not exist
+  .catch((error) => {
+    res.status(404).send({
+      message: "Email not found",
+      error,
     });
+  });
 }
 
 
