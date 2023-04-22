@@ -1,5 +1,9 @@
 # SwipeLeftovers-backend
 
+Link to Deployed Application (Frontend): https://swipeleftovers-real-frontend.herokuapp.com/
+<br>
+Link to Deployed Application (Backend): https://swipeleftovers-frontend.herokuapp.com/
+
 This idea was the collaborative result of four incredibly creative individuals who recognize that in this world today, there is a grave derth of love for all the lonely folk out there who struggle daily to find their soul mate, because all their swipes and likes have already found someone better. 
 
 We here at Swipe Leftovers offer our condolences, and a solution- nay- a do-over at love. Give us a chance, and we'll help pair you up with someone equally as lonely and unfortunate as you. 
