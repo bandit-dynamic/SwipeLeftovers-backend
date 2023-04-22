@@ -31,9 +31,9 @@ app.use(express.json()); // parse json bodies
 app.use("/", routes);
 
 
-// app.use((req,res) => {
-//   res.status(404).json({message: "NOT A PROPER ROUTE"})
-// })
+app.use((req,res) => {
+  res.status(404).json({message: "NOT A PROPER ROUTE"})
+})
 
 
 
