@@ -3,7 +3,8 @@
 ////////////////////////////////
 // get .env variables
 require("dotenv").config();
-
+const mongoose = require('mongoose')
+const {MONGODB_URI} = process.env
 // const { PORT } = process.env;
 const PORT = process.env.PORT || 4000
 // import express
@@ -24,6 +25,12 @@ app.use(express.json()); // parse json bodies
 ///////////////////////////////
 // ROUTES
 ////////////////////////////////
+mongoose.connect(MONGODB_URI).then(() => {
+  console.log('Connected to MongoDB Atlas');
+}).catch((err) => {
+  console.log('Error connecting to MongoDB Atlas:', err);
+});
+
 // create a test route
 //  app.get("/", (req, res) => {
 //   res.send("hello world");
