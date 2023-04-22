@@ -18,6 +18,7 @@ Technologies used:
 - React
 - Node.js
 - Bootstrap 
+- Material.ui
 - Axios 
 - Bcrypt 
 - JSON Web Token (JWT)
